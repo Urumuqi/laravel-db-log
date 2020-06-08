@@ -24,6 +24,7 @@
             "providers": [
                 "Urumuqi\\DbLog\\LogProvider"
             ]
-        }
+        },
+        "class": "Urumuqi\\DbLog"
     }
 }
