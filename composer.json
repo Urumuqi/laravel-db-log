@@ -1,7 +1,6 @@
 {
     "name": "urumuqi/dblog",
     "description": "laravel common log, save log to db",
-    "type": "composer-plugin",
     "license": "MIT",
     "authors": [
         {
