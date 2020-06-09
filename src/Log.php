@@ -8,6 +8,7 @@
 namespace Urumuqi\DbLog;
 
 use Illuminate\Support\Facades\DB;
+use Urumuqi\DbLog\Model\Log as ModelLog;
 
 /**
  * Class Log.
@@ -15,18 +16,51 @@ use Illuminate\Support\Facades\DB;
  */
 class Log
 {
-    public function write($bigTag, $actionTag, array $content, $operator = '', $traceKey = '')
+    /**
+     * save log content.
+     *
+     * @param string $bizTag
+     * @param string $actionTag
+     * @param array  $content
+     * @param string $operator
+     * @param string $traceKey
+     *
+     * @return boolean
+     */
+    public function write($bizTag, $actionTag, array $content, $operator = '', $traceKey = '')
     {
-        //
+        $newLog = new ModelLog();
+        $newLog->biz_tag = $bizTag;
+        $newLog->action_tag = $actionTag;
+        $newLog->log_content = json_encode($content);
+        $newLog->operator = $operator;
+        $newLog->track_key = $traceKey;
+        return $newLog->save();
     }
 
-    public function read($bigTag, $actionTag = '', $pageNum = 1, $pageSize = 15)
+    /**
+     * read log.
+     *
+     * @param string  $bizTag
+     * @param string  $actionTag
+     * @param integer $pageNum
+     * @param integer $pageSize
+     *
+     * @return array
+     */
+    public function read($bizTag, $actionTag = '', $pageNum = 1, $pageSize = 15)
     {
+        $cond = empty($actionTag) ? ['biz_tag' => $bizTag] : ['biz_tag' => $bizTag, 'action_tag' => $actionTag];
         $list = DB::table('db_log')
-            ->select(['operator', 'log_content'])
-            ->where(['big_tag' => $bigTag, 'action_tag' => $actionTag])
-            ->forPage($pageNum, $pageSize);
+            ->select(['operator', 'log_content', 'created_at'])
+            ->where($cond)
+            ->forPage($pageNum, $pageSize)
+            ->get()
+            ->toArray();;
+        array_walk($list, function (&$it) {
+            $it->log_content = json_decode($it->log_content, true);
+        });
 
-        return [];
+        return $list;
     }
 }

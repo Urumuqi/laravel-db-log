@@ -1,13 +1,13 @@
 <?php
 
-namespace Urumuqi\Model;
+namespace Urumuqi\DbLog\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Log.
  *
- * @property string $big_tag
+ * @property string $biz_tag
  * @property string $action_tag
  * @property string $track_key
  * @property string $operator
@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
     protected $table = 'db_log';
+
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'biz_tag',
@@ -30,7 +32,7 @@ class Log extends Model
     ];
 
     protected $casts = [
-        'big_tag' => 'string',
+        'biz_tag' => 'string',
         'action_tag' => 'string',
         'track_key' => 'string',
         'operator' => 'string',

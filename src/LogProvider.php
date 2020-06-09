@@ -17,12 +17,15 @@ class LogProvider extends ServiceProvider
 
     public function register()
     {
-        //
+        // register to laravel service container as singleton
+        $this->app->singleton('dblog', function () {
+            return new Log;
+        });
     }
 
     public function boot()
     {
-        // 数据库迁移
+        // migrations
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
     }
 }
