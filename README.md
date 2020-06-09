@@ -4,6 +4,8 @@ this library provider 2 methods, and let can write and read log.
 
 `Log` service has been register into laravel service container as `singleton`.
 
+Keep Code As Simple As Possible.
+
 ## involved in laravel
 
 ```shell
