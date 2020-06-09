@@ -8,6 +8,7 @@ Keep Code As Simple As Possible.
 
 ## involved in laravel
 
+
 ```shell
 composer require urumuqi/dblog
 ```
@@ -18,6 +19,12 @@ config/app.php add `LogProvider`
 'providers' => [
     Urumuqi\DbLog\LogProvider::class,
 ],
+```
+
+Run migrate, create dblog table
+
+```shell
+php artisan migrate
 ```
 
 ## usage
