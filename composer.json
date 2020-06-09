@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Urumuqi\\Dblog\\": "src/"
+            "Urumuqi\\DbLog\\": "src/"
         }
     },
     "extra": {
