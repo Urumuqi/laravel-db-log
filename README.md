@@ -90,7 +90,7 @@ public function readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize 
 /**
  * 返回结构.
  */
-[
+$pageResult = [
     'data' => [],
     'total' => 10,
 ];
