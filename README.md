@@ -31,10 +31,11 @@ public function write($bizTag, $actionTag, array $content, $operator = '', $trac
  * @param string  $operator
  * @param integer $pageNum
  * @param integer $pageSize
+ * @param boolean $asc      true order by asc ｜ false order by desc
  *
  * @return array
  */
-public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15)
+public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15, $asc = true)
 ```
 
 ## involved in laravel

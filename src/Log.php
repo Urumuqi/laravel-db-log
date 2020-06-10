@@ -48,10 +48,11 @@ class Log
      * @param string  $operator
      * @param integer $pageNum
      * @param integer $pageSize
+     * @param boolean $asc      true order by asc ｜ false order by desc
      *
      * @return array
      */
-    public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15)
+    public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15, $asc = true)
     {
         $cond = empty($actionTag) ? ['biz_tag' => $bizTag] : ['biz_tag' => $bizTag, 'action_tag' => $actionTag];
         $cond = ['biz_tag' => $bizTag];
@@ -67,6 +68,7 @@ class Log
         $list = DB::table('db_log')
             ->select(['operator', 'log_content', 'track_key', 'created_at'])
             ->where($cond)
+            ->orderBy('created_at', $asc ? 'asc' : 'desc')
             ->forPage($pageNum, $pageSize)
             ->get()
             ->toArray();;
