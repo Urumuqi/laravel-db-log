@@ -127,6 +127,6 @@ $readRs1 = $dblog->read($bizTag);
 $readRs2 = $dblog->readByTraceKey($traceKey);
 $readRs3 = $dblog->readByBizTag($bizTag);
 $readRs4 = $dblog->readByBizTraceKey($bizTag, $traceKey);
-$readRs5 = $dblog->readByOperator($operator, null, null, null, false);
+$readRs5 = $dblog->readByOperator($operator);
 dd($saveRs, $readRs1, $readRs2, $readRs3, $readRs4, $readRs5);
 ```
