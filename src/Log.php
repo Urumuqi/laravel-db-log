@@ -167,11 +167,17 @@ class Log
             ->forPage($pageNum, $pageSize)
             ->get()
             ->toArray();
+        $count = DB::table('db_log')
+            ->where($cond)
+            ->count('id');
 
         array_walk($list, function (&$it) {
                 $it->log_content = json_decode($it->log_content, true);
                 $it->created_date = date('Y-m-d', strtotime($it->created_date));
             });
-        return $list;
+        return [
+            'data' => $list,
+            'total' => $count,
+        ];
     }
 }

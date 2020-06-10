@@ -86,6 +86,14 @@ public function readByBizTraceKey($bizTag, $traceKey, $pageNum = 1, $pageSize = 
  * @return array
  */
 public function readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize = 20, $asc = true)
+
+/**
+ * 返回结构.
+ */
+[
+    'data' => [],
+    'total' => 10,
+];
 ```
 
 ## involved in laravel
