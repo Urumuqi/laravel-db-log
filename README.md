@@ -112,15 +112,21 @@ php artisan migrate
 
 ```php
 $dblog = app('dblog');
-$content = [
-    'name' => 'urumuqi',
-    'message' => [
-        'error' => false,
-        'notice' => '测试中，请稍后',
-    ],
-    'before' => [],
+$bizTag = 'dblogtest';
+$actionTag = 'new';
+$logContent = [
+    'package' => 'urumuqi/dblog',
+    'author' => 'urumuqi',
+    'email' => 'wuqi226@gmail.com',
+    'create_date' => date('Y-m-d H:i:s'),
 ];
-$saveRs = $dblog->write('test', 'save', $content, 'urumuqi');
-$readRs = $dblog->read('test', 'save');
-$readRs2 = $dblog->readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true);
+$operator = 'urumuqi';
+$traceKey = 'dblog';
+$saveRs = $dblog->write($bizTag, $actionTag, $logContent, $operator, $traceKey);
+$readRs1 = $dblog->read($bizTag);
+$readRs2 = $dblog->readByTraceKey($traceKey);
+$readRs3 = $dblog->readByBizTag($bizTag);
+$readRs4 = $dblog->readByBizTraceKey($bizTag, $traceKey);
+$readRs5 = $dblog->readByOperator($operator, null, null, null, false);
+dd($saveRs, $readRs1, $readRs2, $readRs3, $readRs4, $readRs5);
 ```
