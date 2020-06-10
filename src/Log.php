@@ -13,6 +13,10 @@ use Urumuqi\DbLog\Model\Log as ModelLog;
 /**
  * Class Log.
  * save log and read log.
+ *
+ * @method array write($bizTag, $actionTag, array $content, $operator = '', $traceKey = '')
+ * @method array read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15, $asc = true)
+ * @method array readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true)
  */
 class Log
 {
@@ -54,7 +58,6 @@ class Log
      */
     public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15, $asc = true)
     {
-        $cond = empty($actionTag) ? ['biz_tag' => $bizTag] : ['biz_tag' => $bizTag, 'action_tag' => $actionTag];
         $cond = ['biz_tag' => $bizTag];
         if (!empty($actionTag)) {
             $cond['action_tag'] = $actionTag;
@@ -76,6 +79,33 @@ class Log
             $it->log_content = json_decode($it->log_content, true);
         });
 
+        return $list;
+    }
+
+    /**
+     * read log content by trace_key.
+     *
+     * @param string  $traceKey
+     * @param integer $pageNum
+     * @param integer $pageSize
+     * @param boolean $asc      asc or desc
+     *
+     * @return array
+     */
+    public function readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true)
+    {
+        $cond = ['track_key' => $traceKey];
+        $list = DB::table('db_log')
+            ->select(['operator', 'log_content', 'track_key', 'created_at'])
+            ->where($cond)
+            ->orderBy('created_at', $asc ? 'asc' : 'desc')
+            ->forPage($pageNum, $pageSize)
+            ->get()
+            ->toArray();
+
+        array_walk($list, function (&$it) {
+                $it->log_content = json_decode($it->log_content, true);
+            });
         return $list;
     }
 }

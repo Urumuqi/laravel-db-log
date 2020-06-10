@@ -36,6 +36,18 @@ public function write($bizTag, $actionTag, array $content, $operator = '', $trac
  * @return array
  */
 public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15, $asc = true)
+
+/**
+ * read log content by trace_key.
+ *
+ * @param string  $traceKey
+ * @param integer $pageNum
+ * @param integer $pageSize
+ * @param boolean $asc      asc or desc
+ *
+ * @return array
+ */
+public function readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true)
 ```
 
 ## involved in laravel
@@ -72,4 +84,5 @@ $content = [
 ];
 $saveRs = $dblog->write('test', 'save', $content, 'urumuqi');
 $readRs = $dblog->read('test', 'save');
+$readRs2 = $dblog->readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true);
 ```
