@@ -28,12 +28,13 @@ public function write($bizTag, $actionTag, array $content, $operator = '', $trac
  * @param string  $bizTag
  * @param string  $actionTag
  * @param string  $traceKey
+ * @param string  $operator
  * @param integer $pageNum
  * @param integer $pageSize
  *
  * @return array
  */
-public function read($bizTag, $actionTag = '', $traceKey = '', $pageNum = 1, $pageSize = 15)
+public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15)
 ```
 
 ## involved in laravel
