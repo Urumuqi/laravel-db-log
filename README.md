@@ -48,6 +48,44 @@ public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $
  * @return array
  */
 public function readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true)
+
+/**
+ * read by biz_tag.
+ *
+ * @param string  $bizTag
+ * @param integer $pageNum
+ * @param integer $pageSize
+ * @param boolean $asc
+ *
+ * @return array
+ */
+public function readByBizTag($bizTag, $pageNum = 1, $pageSize = 20, $asc = true)
+
+/**
+ * read by biz_tag and trace_key.
+ *
+ * @param string  $bizTag
+ * @param string  $traceKey
+ * @param integer $pageNum
+ * @param integer $pageSize
+ * @param boolean $asc
+ *
+ * @return void
+ */
+public function readByBizTraceKey($bizTag, $traceKey, $pageNum = 1, $pageSize = 20, $asc = true)
+
+/**
+ * read by operator.
+ *
+ * @param string  $operator
+ * @param string  $bizTag
+ * @param integer $pageNum
+ * @param integer $pageSize
+ * @param boolean $asc
+ *
+ * @return array
+ */
+public function readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize = 20, $asc = true)
 ```
 
 ## involved in laravel

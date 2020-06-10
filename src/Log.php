@@ -17,6 +17,9 @@ use Urumuqi\DbLog\Model\Log as ModelLog;
  * @method array write($bizTag, $actionTag, array $content, $operator = '', $traceKey = '')
  * @method array read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15, $asc = true)
  * @method array readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true)
+ * @method array readByBizTag($bizTag, $pageNum = 1, $pageSize = 20, $asc = true)
+ * @method array readByBizTraceKey($bizTag, $traceKey, $pageNum = 1, $pageSize = 20, $asc = true)
+ * @method array readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize = 20, $asc = true)
  */
 class Log
 {
@@ -68,18 +71,7 @@ class Log
         if (!empty($operator)) {
             $cond['operator'] = $operator;
         }
-        $list = DB::table('db_log')
-            ->select(['operator', 'log_content', 'track_key', 'created_at'])
-            ->where($cond)
-            ->orderBy('created_at', $asc ? 'asc' : 'desc')
-            ->forPage($pageNum, $pageSize)
-            ->get()
-            ->toArray();;
-        array_walk($list, function (&$it) {
-            $it->log_content = json_decode($it->log_content, true);
-        });
-
-        return $list;
+        return $this->queryLog($cond, $pageNum, $pageSize, $asc);
     }
 
     /**
@@ -95,8 +87,81 @@ class Log
     public function readByTraceKey($traceKey, $pageNum = 1, $pageSize = 15, $asc = true)
     {
         $cond = ['track_key' => $traceKey];
+        return $this->queryLog($cond, $pageNum, $pageSize, $asc);
+    }
+
+    /**
+     * read by biz_tag.
+     *
+     * @param string  $bizTag
+     * @param integer $pageNum
+     * @param integer $pageSize
+     * @param boolean $asc
+     *
+     * @return array
+     */
+    public function readByBizTag($bizTag, $pageNum = 1, $pageSize = 20, $asc = true)
+    {
+        $cond = ['biz_tag' => $bizTag];
+        return $this->queryLog($cond, $pageNum, $pageSize, $asc);
+    }
+
+    /**
+     * read by biz_tag and trace_key.
+     *
+     * @param string  $bizTag
+     * @param string  $traceKey
+     * @param integer $pageNum
+     * @param integer $pageSize
+     * @param boolean $asc
+     *
+     * @return void
+     */
+    public function readByBizTraceKey($bizTag, $traceKey, $pageNum = 1, $pageSize = 20, $asc = true)
+    {
+        $cond = [
+            'biz_tag' => $bizTag,
+            'track_key' => $traceKey,
+        ];
+        return $this->queryLog($cond, $pageNum, $pageSize, $asc);
+    }
+
+    /**
+     * read by operator.
+     *
+     * @param string  $operator
+     * @param string  $bizTag
+     * @param integer $pageNum
+     * @param integer $pageSize
+     * @param boolean $asc
+     *
+     * @return array
+     */
+    public function readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize = 20, $asc = true)
+    {
+        $cond = [
+            'operator' => $operator,
+        ];
+        if ($bizTag) {
+            $cond = array_merge($cond, ['biz_tag' => $bizTag]);
+        }
+        return $this->queryLog($cond, $pageNum, $pageSize, $asc);
+    }
+
+    /**
+     * query loq.
+     *
+     * @param array   $cond
+     * @param integer $pageNum
+     * @param integer $pageSize
+     * @param boolean $asc
+     *
+     * @return array
+     */
+    protected function queryLog(array $cond, $pageNum = 1, $pageSize = 20, $asc = true)
+    {
         $list = DB::table('db_log')
-            ->select(['operator', 'log_content', 'track_key', 'created_at'])
+            ->select(['operator', 'log_content', 'track_key', 'created_at', 'created_date'])
             ->where($cond)
             ->orderBy('created_at', $asc ? 'asc' : 'desc')
             ->forPage($pageNum, $pageSize)
@@ -105,6 +170,7 @@ class Log
 
         array_walk($list, function (&$it) {
                 $it->log_content = json_decode($it->log_content, true);
+                $it->created_date = date('Y-m-d', strtotime($it->created_date));
             });
         return $list;
     }
