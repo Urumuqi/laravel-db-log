@@ -45,12 +45,13 @@ class Log
      * @param string  $bizTag
      * @param string  $actionTag
      * @param string  $traceKey
+     * @param string  $operator
      * @param integer $pageNum
      * @param integer $pageSize
      *
      * @return array
      */
-    public function read($bizTag, $actionTag = '', $traceKey = '', $pageNum = 1, $pageSize = 15)
+    public function read($bizTag, $actionTag = '', $traceKey = '', $operator = '', $pageNum = 1, $pageSize = 15)
     {
         $cond = empty($actionTag) ? ['biz_tag' => $bizTag] : ['biz_tag' => $bizTag, 'action_tag' => $actionTag];
         $cond = ['biz_tag' => $bizTag];
@@ -60,8 +61,11 @@ class Log
         if (!empty($traceKey)) {
             $cond['track_key'] = $traceKey;
         }
+        if (!empty($operator)) {
+            $cond['operator'] = $operator;
+        }
         $list = DB::table('db_log')
-            ->select(['operator', 'log_content', 'created_at'])
+            ->select(['operator', 'log_content', 'track_key', 'created_at'])
             ->where($cond)
             ->forPage($pageNum, $pageSize)
             ->get()
