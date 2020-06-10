@@ -6,8 +6,37 @@ this library provider 2 methods, and let can write and read log.
 
 Keep Code As Simple As Possible.
 
-## involved in laravel
+read & write definition:
 
+```php
+/**
+ * save log content.
+ *
+ * @param string $bizTag
+ * @param string $actionTag
+ * @param array  $content
+ * @param string $operator
+ * @param string $traceKey
+ *
+ * @return boolean
+ */
+public function write($bizTag, $actionTag, array $content, $operator = '', $traceKey = '')
+
+/**
+ * read log.
+ *
+ * @param string  $bizTag
+ * @param string  $actionTag
+ * @param string  $traceKey
+ * @param integer $pageNum
+ * @param integer $pageSize
+ *
+ * @return array
+ */
+public function read($bizTag, $actionTag = '', $traceKey = '', $pageNum = 1, $pageSize = 15)
+```
+
+## involved in laravel
 
 ```shell
 composer require urumuqi/dblog

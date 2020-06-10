@@ -35,6 +35,7 @@ class Log
         $newLog->log_content = json_encode($content);
         $newLog->operator = $operator;
         $newLog->track_key = $traceKey;
+        $newLog->created_date = date('Y-m-d');
         return $newLog->save();
     }
 
@@ -43,14 +44,22 @@ class Log
      *
      * @param string  $bizTag
      * @param string  $actionTag
+     * @param string  $traceKey
      * @param integer $pageNum
      * @param integer $pageSize
      *
      * @return array
      */
-    public function read($bizTag, $actionTag = '', $pageNum = 1, $pageSize = 15)
+    public function read($bizTag, $actionTag = '', $traceKey = '', $pageNum = 1, $pageSize = 15)
     {
         $cond = empty($actionTag) ? ['biz_tag' => $bizTag] : ['biz_tag' => $bizTag, 'action_tag' => $actionTag];
+        $cond = ['biz_tag' => $bizTag];
+        if (!empty($actionTag)) {
+            $cond['action_tag'] = $actionTag;
+        }
+        if (!empty($traceKey)) {
+            $cond['track_key'] = $traceKey;
+        }
         $list = DB::table('db_log')
             ->select(['operator', 'log_content', 'created_at'])
             ->where($cond)
