@@ -161,7 +161,7 @@ class Log
     protected function queryLog(array $cond, $pageNum = 1, $pageSize = 20, $asc = true)
     {
         $list = DB::table('db_log')
-            ->select(['operator', 'log_content', 'track_key', 'created_at', 'created_date'])
+            ->select(['biz_tag', 'action_tag', 'operator', 'log_content', 'track_key', 'created_at', 'created_date'])
             ->where($cond)
             ->orderBy('created_at', $asc ? 'asc' : 'desc')
             ->forPage($pageNum, $pageSize)
