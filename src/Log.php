@@ -20,6 +20,7 @@ use Urumuqi\DbLog\Model\Log as ModelLog;
  * @method array readByBizTag($bizTag, $pageNum = 1, $pageSize = 20, $asc = true)
  * @method array readByBizTraceKey($bizTag, $traceKey, $pageNum = 1, $pageSize = 20, $asc = true)
  * @method array readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize = 20, $asc = true)
+ * @method array queryLogByCond(array $cond, $asc = true)
  */
 class Log
 {
@@ -146,6 +147,30 @@ class Log
             $cond = array_merge($cond, ['biz_tag' => $bizTag]);
         }
         return $this->queryLog($cond, $pageNum, $pageSize, $asc);
+    }
+
+    /**
+     * 根据条件查询日志.
+     *
+     * @param array   $cond
+     * @param boolean $asc
+     * 
+     * @return array
+     */
+    public function queryLogByCond(array $cond, $asc = true)
+    {
+        return [];
+        $list = DB::table('db_log')
+            ->select(['biz_tag', 'action_tag', 'operator', 'log_content', 'track_key', 'created_at', 'created_date'])
+            ->where($cond)
+            ->orderBy('created_at', $asc ? 'asc' : 'desc')
+            ->get();
+        $list->each(function($it) {
+            $it->log_content = json_decode($it->log_content, true);
+                $it->created_date = date('Y-m-d', strtotime($it->created_date));
+        });
+
+        return empty($list) ? [] : $list->toArray();
     }
 
     /**
