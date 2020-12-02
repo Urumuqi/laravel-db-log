@@ -88,6 +88,16 @@ public function readByBizTraceKey($bizTag, $traceKey, $pageNum = 1, $pageSize = 
 public function readByOperator($operator, $bizTag = '', $pageNum = 1, $pageSize = 20, $asc = true)
 
 /**
+ * 根据条件查询日志.
+ *
+ * @param array   $cond
+ * @param boolean $asc
+ * 
+ * @return array
+ */
+public function queryLogByCond(array $cond, $asc = true)
+
+/**
  * 返回结构.
  */
 $pageResult = [
