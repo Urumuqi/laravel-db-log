@@ -159,7 +159,6 @@ class Log
      */
     public function queryLogByCond(array $cond, $asc = true)
     {
-        return [];
         $list = DB::table('db_log')
             ->select(['biz_tag', 'action_tag', 'operator', 'log_content', 'track_key', 'created_at', 'created_date'])
             ->where($cond)
