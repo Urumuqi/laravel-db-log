@@ -159,10 +159,16 @@ class Log
      */
     public function queryLogByCond(array $cond, $asc = true)
     {
-        $list = DB::table('db_log')
-            ->select(['biz_tag', 'action_tag', 'operator', 'log_content', 'track_key', 'created_at', 'created_date'])
-            ->where($cond)
-            ->orderBy('created_at', $asc ? 'asc' : 'desc')
+        $listQuery = DB::table('db_log')
+            ->select(['biz_tag', 'action_tag', 'operator', 'log_content', 'track_key', 'created_at', 'created_date']);
+        foreach ($cond as $k => $con) {
+            if (is_array($con)) {
+                $listQuery->whereIn($k, $con);
+            } else {
+                $listQuery->where($k, $con);
+            }
+        }
+        $list = $listQuery->orderBy('created_at', $asc ? 'asc' : 'desc')
             ->get();
         $list->each(function($it) {
             $it->log_content = json_decode($it->log_content, true);
